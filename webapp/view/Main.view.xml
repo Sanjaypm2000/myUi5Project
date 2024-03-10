@@ -1,0 +1,127 @@
+<!-- varName= it can be any name(just a variable name) -->
+<varName:View xmlns:core="sap.ui.core" xmlns:varName="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:t="sap.ui.table"
+             controllerName="mickey.controller.Main">
+    <!-- <Input id="idInp" value="Enter text" width="30%"></Input> -->
+
+<!-- for json model -->
+<t:Table rows="{/empTab}" visibleRowCount="5" selectionMode="Single" rowSelectionChange="onRowSelect">
+<!-- for xml model -->
+<!-- <t:Table rows="{/empTab/row}" visibleRowCount="5" selectionMode="Single" rowSelectionChange="onRowSelect"> -->
+        <t:columns>
+            <!-- <t:Column label="Emp Id"> -->
+            <t:Column label="{i18n>XLBL_EMPID}">
+                <t:template>
+                    <Text text="{empId}"></Text>
+                </t:template>
+            </t:Column>
+            <t:Column>
+                <t:label>
+                    <!-- <Text text="Emp Name"></Text> -->
+                    <Text text="{i18n>XLBL_EMPNAME}"></Text>
+                </t:label>
+                <t:template>
+                <!-- <Input value="{empName}"></Input> -->
+                    <!-- <Input value="{ path:'empName', formatter: '.convertName'}"></Input> -->
+                    <Input value="{ path:'empName', formatter: '.formatter.convertName'}"></Input>
+                </t:template>
+            </t:Column>
+            <!-- <t:Column label="Salary"> -->
+             <t:Column label="{i18n>XLBL_SALARY}">
+                <t:template>
+                    <HBox>
+                        <!-- <Text text="{salary}"></Text>
+                        <Text text="{currency}"></Text> -->
+                        <!-- OR -->
+                        <!-- <Text text="{salary} {currency}"></Text> -->
+
+                        <Text text="{ parts: [ { path: 'salary'  },
+                                               { path: 'currency'}
+                                             ],
+                                      formatter: '.formatter.getAmountFormatted'
+                                      
+                        }"></Text>
+                        <!-- formatter: '.getAmountFormatted' -->
+                    </HBox>
+                </t:template>
+            </t:Column>
+            <!-- <t:Column label="Smoker"> -->
+            <t:Column label="{i18n>XLBL_SMK}">
+                <t:template>
+                    <CheckBox selected="{smoker}"></CheckBox>
+                    <!-- for xml model , since it always treat all types of data as string, we need to manually make other data to their respective datatypes -->
+                    <!-- <CheckBox  selected="{= ${smoker} === 'true'? true : false}" ></CheckBox> -->
+                </t:template>
+            </t:Column>
+            <!-- <t:Column label="Gender"> -->
+             <t:Column label="{i18n>XLBL_GEN}">
+                <t:template>
+                    <Image width="30px" height="30px" src="{gender}"></Image>
+                </t:template>
+            </t:Column>
+            <!-- <t:Column label="Rating"> -->
+            <t:Column label="{i18n>XLBL_RATE}">
+                <t:template>
+                    <RatingIndicator value="{rating}"></RatingIndicator>
+                </t:template>
+            </t:Column>
+            <!-- <t:Column label="mStat"> -->
+             <t:Column label="{i18n>XLBL_MSTAT}">
+                <t:template>
+                    <Select selectedKey="{mStat}">
+                        <items>
+                            <core:Item key="M" text="Married"></core:Item>
+                            <core:Item key="S" text="Single"></core:Item>
+                            <core:Item key="H" text="Happily Married"></core:Item>
+                        </items>
+                    </Select>
+                </t:template>
+            </t:Column>
+        </t:columns>
+    </t:Table>
+
+
+    <!-- <f:SimpleForm title="My Employee Data" editable="true" id="idSimple"> -->
+    <f:SimpleForm title="{i18n>XTIT_MYEMP}" editable="true" id="idSimple">
+        <!-- <f:title>
+            <core:Title></core:Title>
+        </f:title> -->
+        <f:content>   
+            <!-- <Label text="Emp Id"></Label> -->
+             <Label text="{i18n>XLBL_EMPID}"></Label>
+
+            <!-- <Input id="idEmpId" width="40%" value="{/empStr/empId}" enabled="{/empStr/enabled}"></Input> -->
+            <Input id="idEmpId" width="40%" value="{empId}" ></Input>
+            <!-- <Label text="Emp name"></Label> -->
+            <Label text="{i18n>XLBL_EMPNAME}"></Label>
+
+            <!-- <Input id="idEmpName" width="60%" value="{path : '/empStr/empName'}" enabled="{/empStr/enabled}"></Input> -->
+            <Input id="idEmpName" width="60%" value="{path : 'empName', formatter: '.convertName'}" ></Input>
+            <!-- <Input id="idEmpName" width="60%" value="{path : 'got>/empStr/empName'}"></Input> -->
+            <!-- <Label text="Salary"></Label> -->
+            <Label text="{i18n>XLBL_SALARY}"></Label>
+            <!-- <Input id="idSal" width="30%"></Input> -->
+            <!-- <Input id="idSal" width="30%" enabled="{= ${/empStr/empName} === 'Ananya' ? false : true}"></Input> -->
+            <Input id="idSal" width="30%" value="{path : 'salary'}" enabled="{= ${empName} === 'Ananya' ? false : true}"></Input>
+            <!-- <Label text="Currency"></Label> -->
+            <Label text="{i18n>XLBL_CURR}"></Label>
+
+            <!-- <Input id="idCurr" width="20%" enabled="{/empStr/enabled}"></Input> -->
+            <Input id="idCurr" width="20%" value="{path : 'currency'}" ></Input>
+            <!-- <Label text="Smoker"></Label> -->
+            <Label text="{i18n>XLBL_SMK}"></Label>
+            <!-- <CheckBox id="idSmk" width="40%" selected="{/empStr/smoker}" enabled="{/empStr/enabled}"></CheckBox> -->
+            <CheckBox id="idSmk" width="40%" selected="{smoker}" ></CheckBox>
+            <!-- for xml model , since it always treat all types of data as string, we need to manually make other data to their respective datatypes -->
+             <!-- <CheckBox id="idSmk" width="40%" selected="{= ${smoker}==='true'? true : false}" ></CheckBox> -->
+        </f:content>
+    </f:SimpleForm>
+
+     <Switch change="onSwtChange"></Switch>  
+    <!-- <Button text="Change Data" press="onChangeData"></Button> -->
+    <Button text="{i18n>XBUT_CHANGE}" press="onChangeData"></Button>
+
+    <!-- <Button text="This is New Button" press="anotherFx"></Button> -->
+    <Button text="{i18n>XBUT_NEW}" press="anotherFx"></Button>
+    <!-- <Label text="Salary"></Label>
+    <Input id="idSal" width="30%"></Input> -->
+</varName:View>
